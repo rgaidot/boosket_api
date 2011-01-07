@@ -73,7 +73,6 @@ module BoosketAPI
             :address => "Address", :address_2  => "Address 2",
             :city => "City", :country => "Country", :zip_code => "zip-code"})
           pp(p)
-          p.checkout({:success => "/success", :cancel => "/canceled"})
         end
       end
       
