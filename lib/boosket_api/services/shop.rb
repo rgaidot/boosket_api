@@ -11,13 +11,6 @@ module BoosketAPI
       attr_accessor :navigations      
       attr_accessor :xml
 
-      def initialize
-        self.name, self.specialty, self.baseline, self.xml = nil
-        self.startindex, self.itemsperpage, self.totalresults = 0
-        self.products = []
-        self.navigations = []
-      end
-    
       def find(conditions = {})
         uri = "#{BoosketAPI::Services.session.site}/#{BoosketAPI::Services.session.key}/shop"
         query = "?"

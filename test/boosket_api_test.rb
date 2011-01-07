@@ -4,7 +4,7 @@ module BoosketAPI
   module Test
     class BoosketAPITest < ::Test::Unit::TestCase
       BoosketAPI::Session.new({:server => "localhost:3000", :key => "c7018972b8e5f08ac0b0ab81a28fff"})
-      
+
       def test_shop
         bsk = BoosketAPI::Services::Shop.new
         shop = bsk.find()
@@ -73,7 +73,19 @@ module BoosketAPI
             :address => "Address", :address_2  => "Address 2",
             :city => "City", :country => "Country", :zip_code => "zip-code"})
           pp(p)
+          p.checkout({:success => "/success", :cancel => "/canceled"})
         end
+      end
+      
+      def test_checkout_order
+        p = BoosketAPI::Services::Order.find(1)
+        paypal = p.checkout({:success => "http://localhost:3000/success", :cancel => "http://localhost:3000/canceled"})
+        puts paypal
+      end
+
+      def test_checkout_paid
+        p = BoosketAPI::Services::Order.find(1).paid
+        pp(p)
       end
 
     end
