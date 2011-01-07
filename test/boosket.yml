@@ -1,0 +1,11 @@
+development:
+  server: localhost:3000
+  key: 17a924d7c388251bd0ce326d7cc72a
+
+test:
+  server: 
+  key: 
+
+production:
+  server: 
+  key: 

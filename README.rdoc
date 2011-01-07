@@ -1,0 +1,57 @@
+= Boosket API
+
+The Boosket API gem allows Ruby developers to programmatically access of Boosket stores.
+
+Currently, the API is implemented as XML over HTTP using all two verbs (GET and PUT). Each resource, like shop, product, or order, has its own URL and is manipulated in isolation.
+
+== Usage
+
+=== Requirements
+
+All API usage happens through Boosket applications, created by either shop owners for their own shops, or by Boosket Partners for use by other shop owners.
+
+=== Getting Started
+
+1. First create your shop on Boosket
+2. Install BoosketAPI gem
+    gem install boosket_api
+3. You will need to supply two parameters to the Session class before you instantiate it:
+    BoosketAPI::Session.new({:server => BOOSKET_SERVER, :key => SHOP_KEY})
+4. Now you can play with your data
+   You can retrieve your Boosket shop data with:
+
+      - BoosketAPI::Services::Shop.new
+      - BoosketAPI::Services::Navigation
+      - BoosketAPI::Services::Products.new
+      - BoosketAPI::Services::Product.new
+
+     e.g.
+       bsk = BoosketAPI::Services::Shop.new
+       shop = bsk.find()
+       pp(shop)
+
+   You can create an order, e.g.
+
+       order = BoosketAPI::Services::Orders.new(
+             :ordered_products => {
+               "REFBLK28" => { :reference => "RV510", :combination => 1, :quantity => 2 },
+               "REFBLK36" => { :reference => "RV510", :combination => 2, :quantity => 4 }
+           },
+           :shop_key => "c7018972b8e5f08ac0b0ab81a28fff",
+           :facebook_uid => "541245684"
+       )
+       order.save
+
+   And retrieve the command
+
+        order = BoosketAPI::Services::Order.find(1) 
+        order.set_address({ 
+          :id => nil, :designation => "Designation",
+          :firstname => "Firstname", :name => "Name",
+          :email => "email",
+          :address => "Address", :address_2  => "Address 2",
+          :city => "City", :country => "Country", :zip_code => "Zip code"})
+
+== Copyright
+
+Copyright (c) 2011 "Boosket". See LICENSE for details.
