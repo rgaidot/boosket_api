@@ -10,13 +10,18 @@ module BoosketAPI
         shop = bsk.find()
         pp(shop)
       end
+      
+      def test_shop_find_with_limit
+        bsk = BoosketAPI::Services::Shop.new
+        shop = bsk.find({:nhits => 1})
+        pp(shop)
+      end
 
       def test_products_with_params
         bsk = BoosketAPI::Services::Products.new
         products = bsk.find({:tag => "gps"})
         pp(products)
       end
-      
 
       def test_products_with_sort
         bsk = BoosketAPI::Services::Products.new
@@ -35,7 +40,13 @@ module BoosketAPI
         products = bsk.find({:ids => ["canon-powershot-sx210-is-noir", "western-digital-my-passport-essential-500-go-rouge-usb-30-usb-20"]})
         pp(products)
       end
-      
+
+      def test_products_find_with_limit
+        bsk = BoosketAPI::Services::Products.new
+        products = bsk.find({:nhits => 1})
+        pp(products)
+      end
+
       def test_product
         bsk = BoosketAPI::Services::Product.new
         product = bsk.find({:id => "samsung-rv510-i7p-352-156-led"}).product
@@ -86,7 +97,7 @@ module BoosketAPI
         p = BoosketAPI::Services::Order.find(1).paid
         pp(p)
       end
-
+      
     end
   end
 end

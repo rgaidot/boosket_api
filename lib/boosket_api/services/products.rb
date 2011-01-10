@@ -17,7 +17,8 @@ module BoosketAPI
       def find(conditions = {})
         uri = "#{BoosketAPI::Services.session.site}/#{BoosketAPI::Services.session.key}/shop/products"
         query = "?"
-        query << "page=#{CGI.escape(conditions[:page])}" if conditions[:page] != nil
+        query << "page=#{conditions[:page]}" if conditions[:page] != nil
+        query << "&nhits=#{conditions[:nhits]}" if conditions[:nhits] != nil
         query << "&tag=#{CGI.escape(conditions[:tag])}" if conditions[:tag] != nil
         query << "&sort_by=#{CGI.escape(conditions[:sort_by])}" if conditions[:sort_by] != nil
         query << "&ids=#{conditions[:ids] * ","}" if conditions[:ids] != nil
