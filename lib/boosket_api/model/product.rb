@@ -11,8 +11,9 @@ module BoosketAPI
       attr_accessor :discount
       attr_accessor :currency
       attr_accessor :quantity
-      attr_accessor :image
+      attr_accessor :square
       attr_accessor :thumbnail
+      attr_accessor :normal
       attr_accessor :original
       attr_accessor :combinations
       attr_accessor :tags
@@ -20,7 +21,7 @@ module BoosketAPI
       def initialize(product = nil)
         self.id, self.link, self.title, self.description, self.reference = nil 
         self.price, self.discount_price, self.currency, self.quantity = 0
-        self.image, self.thumbnail, self.original = nil
+        self.square, self.thumbnail, self.normal = self.original = nil
         self.combinations = []
         self.tags = []
         parse(product) if product
@@ -37,9 +38,10 @@ module BoosketAPI
         self.discount = product.at('price')['discount']
         self.currency = product.at('price')['currency']
         self.quantity = product.at('quantity').text
-        self.image = product.at('image').text
-        self.thumbnail = product.at('image')['thumbnail']
-        self.original = product.at('image')['original']
+        self.square = Image.new(product.at('images').at('square'))
+        self.thumbnail = Image.new(product.at('images').at('thumbnail'))
+        self.normal = Image.new(product.at('images').at('normal'))
+        self.original = Image.new(product.at('images').at('original'))
         product.xpath('combinations/combination').each do |c|
           self.combinations << Model::Combination::new(c)
         end
@@ -55,9 +57,10 @@ module BoosketAPI
         s += "Link: #{self.link}\n"
         s += "Title: #{self.title}\n"
         s += "Description: #{self.description}\n"
-        s += "Image: #{self.image}\n"
-        s += "Thumbnail: #{self.thumbnail}\n"
-        s += "Original: #{self.original}\n"
+        s += "Square: #{self.square}\n"
+        s += "Thumbnail img: #{self.thumbnail}\n"
+        s += "Normal img: #{self.normal}\n"
+        s += "Original img: #{self.original}\n"
         s += "Price: #{self.price} #{self.currency}\n"
         s += "Discount price: #{self.discount_price} #{self.currency} (#{self.discount}%)\n"
         s += "Quantity: #{self.quantity}\n"
@@ -66,6 +69,33 @@ module BoosketAPI
         s += "Tags:\n"
         self.tags.each { |i| s += i.to_s(localtime) }
         s += "\n"
+      end
+      
+      class Image
+        attr_accessor :src
+        attr_accessor :width
+        attr_accessor :height
+        
+        def initialize(image = nil)
+          self.src = nil
+          self.width = self.height = 0
+          parse(image) if image
+        end
+        
+        def parse(image)
+          self.src = image.text
+          self.width = image['width']
+          self.height = image['height']
+        end
+        
+        def to_s(localtime = true)
+          s  = ''
+          s += "Image source: #{self.src}\n"
+          s += "Image width: #{self.width}\n"
+          s += "Image height: #{self.height}\n"
+          s += "\n"
+        end
+        
       end
     end
   end

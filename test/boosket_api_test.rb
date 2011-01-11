@@ -28,7 +28,7 @@ module BoosketAPI
         products = bsk.find({:sort_by => "discount desc"})
         pp(products)
       end
-      
+
       def test_products_find_by_references
         bsk = BoosketAPI::Services::Products.new
         products = bsk.find({:references => ["RV510", "LG42LD550"]})
@@ -97,7 +97,7 @@ module BoosketAPI
         p = BoosketAPI::Services::Order.find(1).paid
         pp(p)
       end
-      
+
     end
   end
 end
