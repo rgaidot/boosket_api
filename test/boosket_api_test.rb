@@ -68,11 +68,11 @@ module BoosketAPI
         end
         o = BoosketAPI::Services::Orders.new(
           :ordered_products => {
-            "REFBLK28" => { :reference => "RV510", :combination => 1, :quantity => 2 },
-            "REFBLK36" => { :reference => "RV510", :combination => 2, :quantity => 4 }
+            "REFBLK28" => { :reference => "REFBLK28", :quantity => 2 }
           },
           :shop_key => "c7018972b8e5f08ac0b0ab81a28fff",
-          :facebook_uid => "541245684"
+          :facebook_uid => "541245684",
+          :complement_order => "mykey:mavalue"
         )
         if o.save
           p = BoosketAPI::Services::Order.find(1) # testing getter 
@@ -82,7 +82,8 @@ module BoosketAPI
             :firstname => " prénome", :name => " de famille",
             :email => "mon  email",
             :address => "Address", :address_2  => "Address 2",
-            :city => "City", :country => "Country", :zip_code => "zip-code"})
+            :city => "City", :country => "Country", :zip_code => "zip-code"}, 
+            {:complement_order => "mykey:mavalue, clientid:1234567"})
           pp(p)
         end
       end
