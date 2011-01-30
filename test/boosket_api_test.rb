@@ -3,7 +3,7 @@ require 'test_helper'
 module BoosketAPI
   module Test
     class BoosketAPITest < ::Test::Unit::TestCase
-      BoosketAPI::Session.new({:server => "localhost:3000", :key => "c7018972b8e5f08ac0b0ab81a28fff"})
+      BoosketAPI::Session.new({:server => "app.boosket.com", :key => "1361a1458941f44b22e8c9cb38863c"})
 
       def test_shop
         bsk = BoosketAPI::Services::Shop.new
@@ -61,33 +61,40 @@ module BoosketAPI
       end
 
       def test_purchase_order
-        @boosket_session = BoosketAPI::Session.new({:server => "localhost:3000", :key => "c7018972b8e5f08ac0b0ab81a28fff"})
-        if @boosket_session.valid?
-          p = BoosketAPI::Services::Order.new
-          pp(p.find(1))
-        end
+        @boosket_session = BoosketAPI::Session.new({:server => "localhost:3000", 
+          :key => "c7018972b8e5f08ac0b0ab81a28fff"})
+        #if @boosket_session.valid?
+        #  p = BoosketAPI::Services::Order.new
+        #  pp(p.find(1))
+        #end
         o = BoosketAPI::Services::Orders.new(
           :ordered_products => {
-            "REFBLK28" => { :reference => "REFBLK28", :quantity => 2 }
+            "REF342B" => { :reference => "REFBLK28", :combination => 6, :quantity => 2 }
           },
           :shop_key => "c7018972b8e5f08ac0b0ab81a28fff",
           :facebook_uid => "541245684",
           :complement_order => "mykey:mavalue"
         )
+        o.save
         if o.save
-          p = BoosketAPI::Services::Order.find(1) # testing getter 
+          p = BoosketAPI::Services::Order.find(o) # testing getter 
           pp(p) 
           p.set_address({ 
-            :id => nil, :designation => "Ma ",
-            :firstname => " prénome", :name => " de famille",
-            :email => "mon  email",
+            :id => nil, :designation => "Mr ",
+            :firstname => "Firstname", :name => "Lastname",
+            :email => "Email",
             :address => "Address", :address_2  => "Address 2",
-            :city => "City", :country => "Country", :zip_code => "zip-code"}, 
+            :city => "City", :country => "Country", :zip_code => "ZipCode"}, 
             {:complement_order => "mykey:mavalue, clientid:1234567"})
           pp(p)
         end
       end
-      
+
+      def test_orders_by_shop_key
+        p = BoosketAPI::Services::Orders.all(:params => {:key => "1361a1458941f44b22e8c9cb38863c", :dates => '2011-01-28,2011-01-31'})
+        pp(p)
+      end
+
       def test_checkout_order
         p = BoosketAPI::Services::Order.find(1)
         paypal = p.checkout({:success => "http://localhost:3000/success", :cancel => "http://localhost:3000/canceled"})
