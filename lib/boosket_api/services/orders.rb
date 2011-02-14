@@ -11,8 +11,8 @@ module BoosketAPI
       def set_address(address = {}, order = {})
         self.put(:set_address, :address => address, :order => order) 
       end
-      def checkout(urls = {})
-        self.put(:checkout, :urls => urls) 
+      def checkout(urls = {}, text = "")
+        self.put(:checkout, :urls => urls, :text => text)
       end
       def paid
         self.put(:paid)
