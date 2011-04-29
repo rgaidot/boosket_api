@@ -8,7 +8,7 @@ module BoosketAPI
       attr_accessor :xml
       
       def initialize(resp = nil)
-        self.startindex, self.itemsperpage, self.totalresults = 0
+        self.startindex, self.itemsperpage, self.totalresults = 0, 0, 0
         self.products = []
         self.xml = nil
         parse(resp) if resp

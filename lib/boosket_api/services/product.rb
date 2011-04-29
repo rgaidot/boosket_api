@@ -5,7 +5,7 @@ module BoosketAPI
       attr_accessor :xml
       
       def initialize
-        self.product, self.xml = nil
+        self.product, self.xml = nil, nil
       end
       
       def find(conditions = {})

@@ -2,6 +2,7 @@ module BoosketAPI
   module Services
     class Shop < BoosketAPI::Base
       attr_accessor :name
+      attr_accessor :status
       attr_accessor :specialty
       attr_accessor :baseline
       attr_accessor :startindex
@@ -12,9 +13,10 @@ module BoosketAPI
       attr_accessor :xml
 
       def find(conditions = {})
-        self.name = self.specialty = self.baseline = self.xml = nil
-        self.products = self.navigations = []
-        self.startindex = self.itemsperpage = self.totalresults = 0
+        self.name, self.specialty, self.baseline, self.xml = nil, nil, nil, nil
+        self.products, self.navigations = [], []
+        self.startindex, self.itemsperpage, self.totalresults = 0, 0, 0
+        self.status = "pending"
         uri = "#{BoosketAPI::Services.session.site}/#{BoosketAPI::Services.session.key}/shop"
         query = "?"
         query << "page=#{conditions[:page]}" if conditions[:page] != nil
@@ -38,6 +40,7 @@ module BoosketAPI
         self.startindex =  self.xml.at('/shop/startIndex').text
         self.itemsperpage =  self.xml.at('/shop/itemsPerPage').text
         self.totalresults =  self.xml.at('/shop/totalResults').text
+        self.status = self.xml.at('/shop/status').text
         self.xml.xpath('/shop/navigations/navigation').each do |n|
           self.navigations << Model::Navigation::new(n)
         end
